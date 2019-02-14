@@ -1,0 +1,1286 @@
+//   ---------------------
+//
+//    SIEBERS N.1410
+//
+//    by asq
+//
+//   ---------------------
+
+// v. 11 - aggiunto parametro "attack"
+// v. 12 - cambiato parametro lokey e hikey da c#-1 a c# (DAMPER A e B)
+// v. 13 - aggiunta variabile P_LO (velocity minima) e campioni "rumore" (solo su MIC A)
+// v. 14 - aggiunta curva di attenuazione sui rumori (parametro AMP) a partire dalla velocity minima
+// v. 15c - campioni rinominati
+
+#define $AMP 0.8 // da 0 a 1
+
+#define $P_LO 25
+#define $P_HI 60
+#define $M_LO 61
+#define $M_HI 100
+#define $F_LO 101
+#define $F_HI 127
+#define $KEY_REL 3 // ampeg_release value
+
+#define $B_UP 2000
+#define $B_DOWN -2000
+#define $B_STEP 10 // bending smoothness (1-1200)
+
+<control>
+label_cc14=MIC_A
+label_cc15=MIC_B
+label_cc16=KEYS
+label_cc17=REL
+label_cc18=DAMP
+label_cc64=DAMP_STATE
+label_cc128=BEND
+
+label_cc51=ATTACK
+
+set_cc14=127
+set_cc15=127
+set_cc16=127
+set_cc17=127
+set_cc18=127
+set_cc128=0
+
+set_cc51=0
+
+<global>
+
+
+<master> // RUMORI
+
+	<group>
+
+	ampeg_release=3
+
+	<region> key=21 sample=samples/n01.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=22 sample=samples/n02.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=23 sample=samples/n03.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=24 sample=samples/n04.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=25 sample=samples/n05.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=26 sample=samples/n06.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=27 sample=samples/n07.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=28 sample=samples/n08.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=29 sample=samples/n09.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=30 sample=samples/n10.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=31 sample=samples/n11.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=32 sample=samples/n12.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=33 sample=samples/n13.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=34 sample=samples/n14.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=35 sample=samples/n15.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=36 sample=samples/n16.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=37 sample=samples/n17.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=38 sample=samples/n18.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=39 sample=samples/n19.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=40 sample=samples/n20.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=41 sample=samples/n21.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=42 sample=samples/n22.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=43 sample=samples/n23.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=44 sample=samples/n24.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=45 sample=samples/n25.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=46 sample=samples/n26.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=47 sample=samples/n27.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=48 sample=samples/n28.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=49 sample=samples/n29.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=50 sample=samples/n30.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=51 sample=samples/n31.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=52 sample=samples/n32.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=53 sample=samples/n33.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=54 sample=samples/n34.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=55 sample=samples/n35.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=56 sample=samples/n36.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=57 sample=samples/n37.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=58 sample=samples/n38.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=59 sample=samples/n39.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=60 sample=samples/n40.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=61 sample=samples/n41.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=62 sample=samples/n42.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=63 sample=samples/n43.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=64 sample=samples/n44.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=65 sample=samples/n45.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=66 sample=samples/n46.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=67 sample=samples/n47.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=68 sample=samples/n48.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=69 sample=samples/n49.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=70 sample=samples/n50.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=71 sample=samples/n51.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=72 sample=samples/n52.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=73 sample=samples/n53.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=74 sample=samples/n54.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=75 sample=samples/n55.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=76 sample=samples/n56.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=77 sample=samples/n57.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=78 sample=samples/n58.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=79 sample=samples/n59.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=80 sample=samples/n60.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=81 sample=samples/n61.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=82 sample=samples/n62.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=83 sample=samples/n63.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=84 sample=samples/n64.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=85 sample=samples/n65.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=86 sample=samples/n66.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=87 sample=samples/n67.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=88 sample=samples/n68.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=89 sample=samples/n69.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=90 sample=samples/n70.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=91 sample=samples/n71.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=92 sample=samples/n72.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=93 sample=samples/n73.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=94 sample=samples/n74.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=95 sample=samples/n75.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=96 sample=samples/n76.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=97 sample=samples/n77.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=98 sample=samples/n78.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=99 sample=samples/n79.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=100 sample=samples/n80.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=101 sample=samples/n81.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=102 sample=samples/n82.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=103 sample=samples/n83.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=104 sample=samples/n84.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+	<region> key=105 sample=samples/n85.wav hivel=$P_LO amp_velcurve_$P_LO=$AMP
+
+
+// -------- MIC A --------
+
+<master>
+
+xfin_locc14=0
+xfin_hicc14=127
+
+bend_up=$B_UP
+bend_down=$B_DOWN
+bend_step=$B_STEP
+
+	<group> // KEYS (A)
+
+	xfin_locc16=0
+	xfin_hicc16=127
+	ampeg_release=$KEY_REL
+
+	ampeg_attack_oncc51=1
+	ampeg_attack_curve=11
+
+	<region> key=21 sample=samples/p01a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=21 sample=samples/m01a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=21 sample=samples/f01a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=22 sample=samples/p02a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=22 sample=samples/m02a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=22 sample=samples/f02a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=23 sample=samples/p03a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=23 sample=samples/m03a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=23 sample=samples/f03a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=24 sample=samples/p04a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=24 sample=samples/m04a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=24 sample=samples/f04a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=25 sample=samples/p05a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=25 sample=samples/m05a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=25 sample=samples/f05a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=26 sample=samples/p06a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=26 sample=samples/m06a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=26 sample=samples/f06a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=27 sample=samples/p07a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=27 sample=samples/m07a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=27 sample=samples/f07a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=28 sample=samples/p08a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=28 sample=samples/m08a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=28 sample=samples/f08a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=29 sample=samples/p09a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=29 sample=samples/m09a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=29 sample=samples/f09a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=30 sample=samples/p10a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=30 sample=samples/m10a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=30 sample=samples/f10a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=31 sample=samples/p11a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=31 sample=samples/m11a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=31 sample=samples/f11a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=32 sample=samples/p12a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=32 sample=samples/m12a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=32 sample=samples/f12a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=33 sample=samples/p13a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=33 sample=samples/m13a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=33 sample=samples/f13a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=34 sample=samples/p14a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=34 sample=samples/m14a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=34 sample=samples/f14a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=35 sample=samples/p15a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=35 sample=samples/m15a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=35 sample=samples/f15a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=36 sample=samples/p16a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=36 sample=samples/m16a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=36 sample=samples/f16a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=37 sample=samples/p17a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=37 sample=samples/m17a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=37 sample=samples/f17a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=38 sample=samples/p18a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=38 sample=samples/m18a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=38 sample=samples/f18a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=39 sample=samples/p19a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=39 sample=samples/m19a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=39 sample=samples/f19a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=40 sample=samples/p20a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=40 sample=samples/m20a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=40 sample=samples/f20a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=41 sample=samples/p21a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=41 sample=samples/m21a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=41 sample=samples/f21a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=42 sample=samples/p22a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=42 sample=samples/m22a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=42 sample=samples/f22a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=43 sample=samples/p23a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=43 sample=samples/m23a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=43 sample=samples/f23a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=44 sample=samples/p24a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=44 sample=samples/m24a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=44 sample=samples/f24a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=45 sample=samples/p25a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=45 sample=samples/m25a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=45 sample=samples/f25a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=46 sample=samples/p26a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=46 sample=samples/m26a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=46 sample=samples/f26a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=47 sample=samples/p27a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=47 sample=samples/m27a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=47 sample=samples/f27a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=48 sample=samples/p28a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=48 sample=samples/m28a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=48 sample=samples/f28a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=49 sample=samples/p29a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=49 sample=samples/m29a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=49 sample=samples/f29a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=50 sample=samples/p30a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=50 sample=samples/m30a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=50 sample=samples/f30a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=51 sample=samples/p31a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=51 sample=samples/m31a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=51 sample=samples/f31a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=52 sample=samples/p32a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=52 sample=samples/m32a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=52 sample=samples/f32a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=53 sample=samples/p33a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=53 sample=samples/m33a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=53 sample=samples/f33a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=54 sample=samples/p34a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=54 sample=samples/m34a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=54 sample=samples/f34a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=55 sample=samples/p35a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=55 sample=samples/m35a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=55 sample=samples/f35a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=56 sample=samples/p36a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=56 sample=samples/m36a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=56 sample=samples/f36a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=57 sample=samples/p37a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=57 sample=samples/m37a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=57 sample=samples/f37a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=58 sample=samples/p38a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=58 sample=samples/m38a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=58 sample=samples/f38a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=59 sample=samples/p39a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=59 sample=samples/m39a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=59 sample=samples/f39a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=60 sample=samples/p40a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=60 sample=samples/m40a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=60 sample=samples/f40a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=61 sample=samples/p41a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=61 sample=samples/m41a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=61 sample=samples/f41a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=62 sample=samples/p42a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=62 sample=samples/m42a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=62 sample=samples/f42a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=63 sample=samples/p43a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=63 sample=samples/m43a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=63 sample=samples/f43a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=64 sample=samples/p44a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=64 sample=samples/m44a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=64 sample=samples/f44a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=65 sample=samples/p45a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=65 sample=samples/m45a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=65 sample=samples/f45a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=66 sample=samples/p46a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=66 sample=samples/m46a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=66 sample=samples/f46a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=67 sample=samples/p47a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=67 sample=samples/m47a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=67 sample=samples/f47a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=68 sample=samples/p48a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=68 sample=samples/m48a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=68 sample=samples/f48a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=69 sample=samples/p49a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=69 sample=samples/m49a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=69 sample=samples/f49a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=70 sample=samples/p50a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=70 sample=samples/m50a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=70 sample=samples/f50a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=71 sample=samples/p51a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=71 sample=samples/m51a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=71 sample=samples/f51a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=72 sample=samples/p52a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=72 sample=samples/m52a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=72 sample=samples/f52a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=73 sample=samples/p53a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=73 sample=samples/m53a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=73 sample=samples/f53a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=74 sample=samples/p54a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=74 sample=samples/m54a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=74 sample=samples/f54a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=75 sample=samples/p55a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=75 sample=samples/m55a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=75 sample=samples/f55a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=76 sample=samples/p56a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=76 sample=samples/m56a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=76 sample=samples/f56a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=77 sample=samples/p57a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=77 sample=samples/m57a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=77 sample=samples/f57a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=78 sample=samples/p58a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=78 sample=samples/m58a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=78 sample=samples/f58a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=79 sample=samples/p59a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=79 sample=samples/m59a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=79 sample=samples/f59a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=80 sample=samples/p60a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=80 sample=samples/m60a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=80 sample=samples/f60a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=81 sample=samples/p61a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=81 sample=samples/m61a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=81 sample=samples/f61a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=82 sample=samples/p62a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=82 sample=samples/m62a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=82 sample=samples/f62a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=83 sample=samples/p63a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=83 sample=samples/m63a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=83 sample=samples/f63a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=84 sample=samples/p64a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=84 sample=samples/m64a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=84 sample=samples/f64a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=85 sample=samples/p65a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=85 sample=samples/m65a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=85 sample=samples/f65a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=86 sample=samples/p66a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=86 sample=samples/m66a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=86 sample=samples/f66a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=87 sample=samples/p67a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=87 sample=samples/m67a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=87 sample=samples/f67a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=88 sample=samples/p68a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=88 sample=samples/m68a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=88 sample=samples/f68a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=89 sample=samples/p69a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=89 sample=samples/m69a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=89 sample=samples/f69a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=90 sample=samples/p70a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=90 sample=samples/m70a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=90 sample=samples/f70a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=91 sample=samples/p71a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=91 sample=samples/m71a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=91 sample=samples/f71a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=92 sample=samples/p72a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=92 sample=samples/m72a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=92 sample=samples/f72a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=93 sample=samples/p73a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=93 sample=samples/m73a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=93 sample=samples/f73a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=94 sample=samples/p74a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=94 sample=samples/m74a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=94 sample=samples/f74a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=95 sample=samples/p75a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=95 sample=samples/m75a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=95 sample=samples/f75a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=96 sample=samples/p76a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=96 sample=samples/m76a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=96 sample=samples/f76a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=97 sample=samples/p77a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=97 sample=samples/m77a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=97 sample=samples/f77a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=98 sample=samples/p78a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=98 sample=samples/m78a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=98 sample=samples/f78a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=99 sample=samples/p79a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=99 sample=samples/m79a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=99 sample=samples/f79a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=100 sample=samples/p80a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=100 sample=samples/m80a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=100 sample=samples/f80a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=101 sample=samples/p81a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=101 sample=samples/m81a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=101 sample=samples/f81a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=102 sample=samples/p82a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=102 sample=samples/m82a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=102 sample=samples/f82a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=103 sample=samples/p83a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=103 sample=samples/m83a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=103 sample=samples/f83a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=104 sample=samples/p84a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=104 sample=samples/m84a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=104 sample=samples/f84a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=105 sample=samples/p85a.wav lovel=$P_LO hivel=$P_HI
+	<region> key=105 sample=samples/m85a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=105 sample=samples/f85a.wav lovel=$F_LO hivel=$F_HI
+
+	<group> // REL (A)
+
+	xfin_locc17=0
+	xfin_hicc17=127
+	trigger=release_key
+
+	<region> key=21 sample=samples/rp01a.wav hivel=$P_HI
+	<region> key=21 sample=samples/rm01a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=21 sample=samples/rf01a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=22 sample=samples/rp02a.wav hivel=$P_HI
+	<region> key=22 sample=samples/rm02a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=22 sample=samples/rf02a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=23 sample=samples/rp03a.wav hivel=$P_HI
+	<region> key=23 sample=samples/rm03a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=23 sample=samples/rf03a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=24 sample=samples/rp04a.wav hivel=$P_HI
+	<region> key=24 sample=samples/rm04a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=24 sample=samples/rf04a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=25 sample=samples/rp05a.wav hivel=$P_HI
+	<region> key=25 sample=samples/rm05a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=25 sample=samples/rf05a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=26 sample=samples/rp06a.wav hivel=$P_HI
+	<region> key=26 sample=samples/rm06a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=26 sample=samples/rf06a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=27 sample=samples/rp07a.wav hivel=$P_HI
+	<region> key=27 sample=samples/rm07a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=27 sample=samples/rf07a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=28 sample=samples/rp08a.wav hivel=$P_HI
+	<region> key=28 sample=samples/rm08a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=28 sample=samples/rf08a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=29 sample=samples/rp09a.wav hivel=$P_HI
+	<region> key=29 sample=samples/rm09a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=29 sample=samples/rf09a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=30 sample=samples/rp10a.wav hivel=$P_HI
+	<region> key=30 sample=samples/rm10a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=30 sample=samples/rf10a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=31 sample=samples/rp11a.wav hivel=$P_HI
+	<region> key=31 sample=samples/rm11a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=31 sample=samples/rf11a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=32 sample=samples/rp12a.wav hivel=$P_HI
+	<region> key=32 sample=samples/rm12a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=32 sample=samples/rf12a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=33 sample=samples/rp13a.wav hivel=$P_HI
+	<region> key=33 sample=samples/rm13a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=33 sample=samples/rf13a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=34 sample=samples/rp14a.wav hivel=$P_HI
+	<region> key=34 sample=samples/rm14a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=34 sample=samples/rf14a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=35 sample=samples/rp15a.wav hivel=$P_HI
+	<region> key=35 sample=samples/rm15a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=35 sample=samples/rf15a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=36 sample=samples/rp16a.wav hivel=$P_HI
+	<region> key=36 sample=samples/rm16a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=36 sample=samples/rf16a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=37 sample=samples/rp17a.wav hivel=$P_HI
+	<region> key=37 sample=samples/rm17a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=37 sample=samples/rf17a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=38 sample=samples/rp18a.wav hivel=$P_HI
+	<region> key=38 sample=samples/rm18a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=38 sample=samples/rf18a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=39 sample=samples/rp19a.wav hivel=$P_HI
+	<region> key=39 sample=samples/rm19a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=39 sample=samples/rf19a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=40 sample=samples/rp20a.wav hivel=$P_HI
+	<region> key=40 sample=samples/rm20a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=40 sample=samples/rf20a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=41 sample=samples/rp21a.wav hivel=$P_HI
+	<region> key=41 sample=samples/rm21a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=41 sample=samples/rf21a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=42 sample=samples/rp22a.wav hivel=$P_HI
+	<region> key=42 sample=samples/rm22a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=42 sample=samples/rf22a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=43 sample=samples/rp23a.wav hivel=$P_HI
+	<region> key=43 sample=samples/rm23a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=43 sample=samples/rf23a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=44 sample=samples/rp24a.wav hivel=$P_HI
+	<region> key=44 sample=samples/rm24a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=44 sample=samples/rf24a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=45 sample=samples/rp25a.wav hivel=$P_HI
+	<region> key=45 sample=samples/rm25a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=45 sample=samples/rf25a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=46 sample=samples/rp26a.wav hivel=$P_HI
+	<region> key=46 sample=samples/rm26a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=46 sample=samples/rf26a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=47 sample=samples/rp27a.wav hivel=$P_HI
+	<region> key=47 sample=samples/rm27a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=47 sample=samples/rf27a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=48 sample=samples/rp28a.wav hivel=$P_HI
+	<region> key=48 sample=samples/rm28a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=48 sample=samples/rf28a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=49 sample=samples/rp29a.wav hivel=$P_HI
+	<region> key=49 sample=samples/rm29a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=49 sample=samples/rf29a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=50 sample=samples/rp30a.wav hivel=$P_HI
+	<region> key=50 sample=samples/rm30a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=50 sample=samples/rf30a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=51 sample=samples/rp31a.wav hivel=$P_HI
+	<region> key=51 sample=samples/rm31a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=51 sample=samples/rf31a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=52 sample=samples/rp32a.wav hivel=$P_HI
+	<region> key=52 sample=samples/rm32a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=52 sample=samples/rf32a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=53 sample=samples/rp33a.wav hivel=$P_HI
+	<region> key=53 sample=samples/rm33a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=53 sample=samples/rf33a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=54 sample=samples/rp34a.wav hivel=$P_HI
+	<region> key=54 sample=samples/rm34a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=54 sample=samples/rf34a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=55 sample=samples/rp35a.wav hivel=$P_HI
+	<region> key=55 sample=samples/rm35a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=55 sample=samples/rf35a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=56 sample=samples/rp36a.wav hivel=$P_HI
+	<region> key=56 sample=samples/rm36a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=56 sample=samples/rf36a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=57 sample=samples/rp37a.wav hivel=$P_HI
+	<region> key=57 sample=samples/rm37a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=57 sample=samples/rf37a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=58 sample=samples/rp38a.wav hivel=$P_HI
+	<region> key=58 sample=samples/rm38a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=58 sample=samples/rf38a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=59 sample=samples/rp39a.wav hivel=$P_HI
+	<region> key=59 sample=samples/rm39a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=59 sample=samples/rf39a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=60 sample=samples/rp40a.wav hivel=$P_HI
+	<region> key=60 sample=samples/rm40a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=60 sample=samples/rf40a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=61 sample=samples/rp41a.wav hivel=$P_HI
+	<region> key=61 sample=samples/rm41a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=61 sample=samples/rf41a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=62 sample=samples/rp42a.wav hivel=$P_HI
+	<region> key=62 sample=samples/rm42a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=62 sample=samples/rf42a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=63 sample=samples/rp43a.wav hivel=$P_HI
+	<region> key=63 sample=samples/rm43a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=63 sample=samples/rf43a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=64 sample=samples/rp44a.wav hivel=$P_HI
+	<region> key=64 sample=samples/rm44a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=64 sample=samples/rf44a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=65 sample=samples/rp45a.wav hivel=$P_HI
+	<region> key=65 sample=samples/rm45a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=65 sample=samples/rf45a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=66 sample=samples/rp46a.wav hivel=$P_HI
+	<region> key=66 sample=samples/rm46a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=66 sample=samples/rf46a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=67 sample=samples/rp47a.wav hivel=$P_HI
+	<region> key=67 sample=samples/rm47a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=67 sample=samples/rf47a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=68 sample=samples/rp48a.wav hivel=$P_HI
+	<region> key=68 sample=samples/rm48a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=68 sample=samples/rf48a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=69 sample=samples/rp49a.wav hivel=$P_HI
+	<region> key=69 sample=samples/rm49a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=69 sample=samples/rf49a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=70 sample=samples/rp50a.wav hivel=$P_HI
+	<region> key=70 sample=samples/rm50a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=70 sample=samples/rf50a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=71 sample=samples/rp51a.wav hivel=$P_HI
+	<region> key=71 sample=samples/rm51a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=71 sample=samples/rf51a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=72 sample=samples/rp52a.wav hivel=$P_HI
+	<region> key=72 sample=samples/rm52a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=72 sample=samples/rf52a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=73 sample=samples/rp53a.wav hivel=$P_HI
+	<region> key=73 sample=samples/rm53a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=73 sample=samples/rf53a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=74 sample=samples/rp54a.wav hivel=$P_HI
+	<region> key=74 sample=samples/rm54a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=74 sample=samples/rf54a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=75 sample=samples/rp55a.wav hivel=$P_HI
+	<region> key=75 sample=samples/rm55a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=75 sample=samples/rf55a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=76 sample=samples/rp56a.wav hivel=$P_HI
+	<region> key=76 sample=samples/rm56a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=76 sample=samples/rf56a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=77 sample=samples/rp57a.wav hivel=$P_HI
+	<region> key=77 sample=samples/rm57a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=77 sample=samples/rf57a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=78 sample=samples/rp58a.wav hivel=$P_HI
+	<region> key=78 sample=samples/rm58a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=78 sample=samples/rf58a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=79 sample=samples/rp59a.wav hivel=$P_HI
+	<region> key=79 sample=samples/rm59a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=79 sample=samples/rf59a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=80 sample=samples/rp60a.wav hivel=$P_HI
+	<region> key=80 sample=samples/rm60a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=80 sample=samples/rf60a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=81 sample=samples/rp61a.wav hivel=$P_HI
+	<region> key=81 sample=samples/rm61a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=81 sample=samples/rf61a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=82 sample=samples/rp62a.wav hivel=$P_HI
+	<region> key=82 sample=samples/rm62a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=82 sample=samples/rf62a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=83 sample=samples/rp63a.wav hivel=$P_HI
+	<region> key=83 sample=samples/rm63a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=83 sample=samples/rf63a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=84 sample=samples/rp64a.wav hivel=$P_HI
+	<region> key=84 sample=samples/rm64a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=84 sample=samples/rf64a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=85 sample=samples/rp65a.wav hivel=$P_HI
+	<region> key=85 sample=samples/rm65a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=85 sample=samples/rf65a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=86 sample=samples/rp66a.wav hivel=$P_HI
+	<region> key=86 sample=samples/rm66a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=86 sample=samples/rf66a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=87 sample=samples/rp67a.wav hivel=$P_HI
+	<region> key=87 sample=samples/rm67a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=87 sample=samples/rf67a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=88 sample=samples/rp68a.wav hivel=$P_HI
+	<region> key=88 sample=samples/rm68a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=88 sample=samples/rf68a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=89 sample=samples/rp69a.wav hivel=$P_HI
+	<region> key=89 sample=samples/rm69a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=89 sample=samples/rf69a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=90 sample=samples/rp70a.wav hivel=$P_HI
+	<region> key=90 sample=samples/rm70a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=90 sample=samples/rf70a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=91 sample=samples/rp71a.wav hivel=$P_HI
+	<region> key=91 sample=samples/rm71a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=91 sample=samples/rf71a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=92 sample=samples/rp72a.wav hivel=$P_HI
+	<region> key=92 sample=samples/rm72a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=92 sample=samples/rf72a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=93 sample=samples/rp73a.wav hivel=$P_HI
+	<region> key=93 sample=samples/rm73a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=93 sample=samples/rf73a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=94 sample=samples/rp74a.wav hivel=$P_HI
+	<region> key=94 sample=samples/rm74a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=94 sample=samples/rf74a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=95 sample=samples/rp75a.wav hivel=$P_HI
+	<region> key=95 sample=samples/rm75a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=95 sample=samples/rf75a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=96 sample=samples/rp76a.wav hivel=$P_HI
+	<region> key=96 sample=samples/rm76a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=96 sample=samples/rf76a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=97 sample=samples/rp77a.wav hivel=$P_HI
+	<region> key=97 sample=samples/rm77a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=97 sample=samples/rf77a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=98 sample=samples/rp78a.wav hivel=$P_HI
+	<region> key=98 sample=samples/rm78a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=98 sample=samples/rf78a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=99 sample=samples/rp79a.wav hivel=$P_HI
+	<region> key=99 sample=samples/rm79a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=99 sample=samples/rf79a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=100 sample=samples/rp80a.wav hivel=$P_HI
+	<region> key=100 sample=samples/rm80a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=100 sample=samples/rf80a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=101 sample=samples/rp81a.wav hivel=$P_HI
+	<region> key=101 sample=samples/rm81a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=101 sample=samples/rf81a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=102 sample=samples/rp82a.wav hivel=$P_HI
+	<region> key=102 sample=samples/rm82a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=102 sample=samples/rf82a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=103 sample=samples/rp83a.wav hivel=$P_HI
+	<region> key=103 sample=samples/rm83a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=103 sample=samples/rf83a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=104 sample=samples/rp84a.wav hivel=$P_HI
+	<region> key=104 sample=samples/rm84a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=104 sample=samples/rf84a.wav lovel=$F_LO hivel=$F_HI
+	<region> key=105 sample=samples/rp85a.wav hivel=$P_HI
+	<region> key=105 sample=samples/rm85a.wav lovel=$M_LO hivel=$M_HI
+	<region> key=105 sample=samples/rf85a.wav lovel=$F_LO hivel=$F_HI
+
+// -------- DAMPER (A) --------
+
+<master>
+
+xfin_locc14=0 // MIC "A" VOLUME
+xfin_hicc14=127 // MIC "A" VOLUME
+xfin_locc18=0
+xfin_hicc18=127
+sustain_sw=off
+loop_mode=one_shot
+lokey=c#
+hikey=c#
+
+	<group> // DOWN (A)
+
+	group=2
+	off_by=1
+	on_locc64=127
+	on_hicc64=127
+
+	<region> sample=samples/pda.wav
+
+	<group> // UP (A)
+
+	group=1
+	trigger=release
+	on_locc64=0
+	on_hicc64=0
+
+	<region> sample=samples/pua.wav
+
+// -------- MIC B --------
+
+<master>
+
+xfin_locc15=0
+xfin_hicc15=127
+
+bend_up=$B_UP
+bend_down=$B_DOWN
+bend_step=$B_STEP
+
+	<group> // KEYS (B)
+
+	xfin_locc16=0
+	xfin_hicc16=127
+	ampeg_release=$KEY_REL
+
+	ampeg_attack_oncc51=1
+	ampeg_attack_curve=11
+
+	<region> key=21 sample=samples/p01b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=21 sample=samples/m01b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=21 sample=samples/f01b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=22 sample=samples/p02b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=22 sample=samples/m02b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=22 sample=samples/f02b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=23 sample=samples/p03b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=23 sample=samples/m03b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=23 sample=samples/f03b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=24 sample=samples/p04b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=24 sample=samples/m04b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=24 sample=samples/f04b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=25 sample=samples/p05b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=25 sample=samples/m05b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=25 sample=samples/f05b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=26 sample=samples/p06b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=26 sample=samples/m06b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=26 sample=samples/f06b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=27 sample=samples/p07b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=27 sample=samples/m07b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=27 sample=samples/f07b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=28 sample=samples/p08b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=28 sample=samples/m08b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=28 sample=samples/f08b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=29 sample=samples/p09b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=29 sample=samples/m09b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=29 sample=samples/f09b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=30 sample=samples/p10b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=30 sample=samples/m10b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=30 sample=samples/f10b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=31 sample=samples/p11b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=31 sample=samples/m11b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=31 sample=samples/f11b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=32 sample=samples/p12b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=32 sample=samples/m12b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=32 sample=samples/f12b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=33 sample=samples/p13b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=33 sample=samples/m13b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=33 sample=samples/f13b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=34 sample=samples/p14b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=34 sample=samples/m14b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=34 sample=samples/f14b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=35 sample=samples/p15b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=35 sample=samples/m15b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=35 sample=samples/f15b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=36 sample=samples/p16b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=36 sample=samples/m16b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=36 sample=samples/f16b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=37 sample=samples/p17b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=37 sample=samples/m17b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=37 sample=samples/f17b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=38 sample=samples/p18b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=38 sample=samples/m18b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=38 sample=samples/f18b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=39 sample=samples/p19b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=39 sample=samples/m19b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=39 sample=samples/f19b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=40 sample=samples/p20b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=40 sample=samples/m20b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=40 sample=samples/f20b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=41 sample=samples/p21b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=41 sample=samples/m21b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=41 sample=samples/f21b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=42 sample=samples/p22b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=42 sample=samples/m22b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=42 sample=samples/f22b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=43 sample=samples/p23b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=43 sample=samples/m23b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=43 sample=samples/f23b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=44 sample=samples/p24b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=44 sample=samples/m24b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=44 sample=samples/f24b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=45 sample=samples/p25b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=45 sample=samples/m25b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=45 sample=samples/f25b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=46 sample=samples/p26b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=46 sample=samples/m26b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=46 sample=samples/f26b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=47 sample=samples/p27b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=47 sample=samples/m27b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=47 sample=samples/f27b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=48 sample=samples/p28b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=48 sample=samples/m28b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=48 sample=samples/f28b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=49 sample=samples/p29b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=49 sample=samples/m29b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=49 sample=samples/f29b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=50 sample=samples/p30b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=50 sample=samples/m30b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=50 sample=samples/f30b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=51 sample=samples/p31b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=51 sample=samples/m31b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=51 sample=samples/f31b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=52 sample=samples/p32b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=52 sample=samples/m32b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=52 sample=samples/f32b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=53 sample=samples/p33b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=53 sample=samples/m33b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=53 sample=samples/f33b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=54 sample=samples/p34b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=54 sample=samples/m34b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=54 sample=samples/f34b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=55 sample=samples/p35b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=55 sample=samples/m35b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=55 sample=samples/f35b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=56 sample=samples/p36b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=56 sample=samples/m36b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=56 sample=samples/f36b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=57 sample=samples/p37b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=57 sample=samples/m37b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=57 sample=samples/f37b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=58 sample=samples/p38b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=58 sample=samples/m38b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=58 sample=samples/f38b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=59 sample=samples/p39b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=59 sample=samples/m39b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=59 sample=samples/f39b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=60 sample=samples/p40b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=60 sample=samples/m40b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=60 sample=samples/f40b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=61 sample=samples/p41b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=61 sample=samples/m41b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=61 sample=samples/f41b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=62 sample=samples/p42b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=62 sample=samples/m42b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=62 sample=samples/f42b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=63 sample=samples/p43b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=63 sample=samples/m43b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=63 sample=samples/f43b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=64 sample=samples/p44b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=64 sample=samples/m44b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=64 sample=samples/f44b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=65 sample=samples/p45b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=65 sample=samples/m45b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=65 sample=samples/f45b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=66 sample=samples/p46b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=66 sample=samples/m46b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=66 sample=samples/f46b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=67 sample=samples/p47b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=67 sample=samples/m47b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=67 sample=samples/f47b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=68 sample=samples/p48b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=68 sample=samples/m48b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=68 sample=samples/f48b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=69 sample=samples/p49b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=69 sample=samples/m49b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=69 sample=samples/f49b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=70 sample=samples/p50b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=70 sample=samples/m50b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=70 sample=samples/f50b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=71 sample=samples/p51b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=71 sample=samples/m51b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=71 sample=samples/f51b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=72 sample=samples/p52b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=72 sample=samples/m52b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=72 sample=samples/f52b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=73 sample=samples/p53b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=73 sample=samples/m53b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=73 sample=samples/f53b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=74 sample=samples/p54b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=74 sample=samples/m54b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=74 sample=samples/f54b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=75 sample=samples/p55b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=75 sample=samples/m55b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=75 sample=samples/f55b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=76 sample=samples/p56b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=76 sample=samples/m56b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=76 sample=samples/f56b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=77 sample=samples/p57b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=77 sample=samples/m57b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=77 sample=samples/f57b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=78 sample=samples/p58b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=78 sample=samples/m58b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=78 sample=samples/f58b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=79 sample=samples/p59b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=79 sample=samples/m59b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=79 sample=samples/f59b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=80 sample=samples/p60b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=80 sample=samples/m60b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=80 sample=samples/f60b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=81 sample=samples/p61b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=81 sample=samples/m61b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=81 sample=samples/f61b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=82 sample=samples/p62b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=82 sample=samples/m62b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=82 sample=samples/f62b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=83 sample=samples/p63b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=83 sample=samples/m63b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=83 sample=samples/f63b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=84 sample=samples/p64b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=84 sample=samples/m64b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=84 sample=samples/f64b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=85 sample=samples/p65b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=85 sample=samples/m65b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=85 sample=samples/f65b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=86 sample=samples/p66b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=86 sample=samples/m66b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=86 sample=samples/f66b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=87 sample=samples/p67b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=87 sample=samples/m67b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=87 sample=samples/f67b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=88 sample=samples/p68b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=88 sample=samples/m68b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=88 sample=samples/f68b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=89 sample=samples/p69b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=89 sample=samples/m69b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=89 sample=samples/f69b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=90 sample=samples/p70b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=90 sample=samples/m70b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=90 sample=samples/f70b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=91 sample=samples/p71b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=91 sample=samples/m71b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=91 sample=samples/f71b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=92 sample=samples/p72b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=92 sample=samples/m72b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=92 sample=samples/f72b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=93 sample=samples/p73b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=93 sample=samples/m73b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=93 sample=samples/f73b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=94 sample=samples/p74b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=94 sample=samples/m74b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=94 sample=samples/f74b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=95 sample=samples/p75b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=95 sample=samples/m75b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=95 sample=samples/f75b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=96 sample=samples/p76b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=96 sample=samples/m76b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=96 sample=samples/f76b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=97 sample=samples/p77b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=97 sample=samples/m77b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=97 sample=samples/f77b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=98 sample=samples/p78b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=98 sample=samples/m78b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=98 sample=samples/f78b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=99 sample=samples/p79b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=99 sample=samples/m79b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=99 sample=samples/f79b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=100 sample=samples/p80b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=100 sample=samples/m80b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=100 sample=samples/f80b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=101 sample=samples/p81b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=101 sample=samples/m81b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=101 sample=samples/f81b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=102 sample=samples/p82b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=102 sample=samples/m82b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=102 sample=samples/f82b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=103 sample=samples/p83b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=103 sample=samples/m83b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=103 sample=samples/f83b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=104 sample=samples/p84b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=104 sample=samples/m84b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=104 sample=samples/f84b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=105 sample=samples/p85b.wav lovel=$P_LO hivel=$P_HI
+	<region> key=105 sample=samples/m85b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=105 sample=samples/f85b.wav lovel=$F_LO hivel=$F_HI
+
+	<group> // REL (B)
+
+	xfin_locc17=0
+	xfin_hicc17=127
+	trigger=release_key
+
+	<region> key=21 sample=samples/rp01b.wav hivel=$P_HI
+	<region> key=21 sample=samples/rm01b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=21 sample=samples/rf01b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=22 sample=samples/rp02b.wav hivel=$P_HI
+	<region> key=22 sample=samples/rm02b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=22 sample=samples/rf02b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=23 sample=samples/rp03b.wav hivel=$P_HI
+	<region> key=23 sample=samples/rm03b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=23 sample=samples/rf03b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=24 sample=samples/rp04b.wav hivel=$P_HI
+	<region> key=24 sample=samples/rm04b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=24 sample=samples/rf04b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=25 sample=samples/rp05b.wav hivel=$P_HI
+	<region> key=25 sample=samples/rm05b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=25 sample=samples/rf05b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=26 sample=samples/rp06b.wav hivel=$P_HI
+	<region> key=26 sample=samples/rm06b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=26 sample=samples/rf06b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=27 sample=samples/rp07b.wav hivel=$P_HI
+	<region> key=27 sample=samples/rm07b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=27 sample=samples/rf07b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=28 sample=samples/rp08b.wav hivel=$P_HI
+	<region> key=28 sample=samples/rm08b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=28 sample=samples/rf08b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=29 sample=samples/rp09b.wav hivel=$P_HI
+	<region> key=29 sample=samples/rm09b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=29 sample=samples/rf09b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=30 sample=samples/rp10b.wav hivel=$P_HI
+	<region> key=30 sample=samples/rm10b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=30 sample=samples/rf10b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=31 sample=samples/rp11b.wav hivel=$P_HI
+	<region> key=31 sample=samples/rm11b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=31 sample=samples/rf11b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=32 sample=samples/rp12b.wav hivel=$P_HI
+	<region> key=32 sample=samples/rm12b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=32 sample=samples/rf12b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=33 sample=samples/rp13b.wav hivel=$P_HI
+	<region> key=33 sample=samples/rm13b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=33 sample=samples/rf13b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=34 sample=samples/rp14b.wav hivel=$P_HI
+	<region> key=34 sample=samples/rm14b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=34 sample=samples/rf14b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=35 sample=samples/rp15b.wav hivel=$P_HI
+	<region> key=35 sample=samples/rm15b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=35 sample=samples/rf15b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=36 sample=samples/rp16b.wav hivel=$P_HI
+	<region> key=36 sample=samples/rm16b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=36 sample=samples/rf16b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=37 sample=samples/rp17b.wav hivel=$P_HI
+	<region> key=37 sample=samples/rm17b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=37 sample=samples/rf17b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=38 sample=samples/rp18b.wav hivel=$P_HI
+	<region> key=38 sample=samples/rm18b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=38 sample=samples/rf18b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=39 sample=samples/rp19b.wav hivel=$P_HI
+	<region> key=39 sample=samples/rm19b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=39 sample=samples/rf19b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=40 sample=samples/rp20b.wav hivel=$P_HI
+	<region> key=40 sample=samples/rm20b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=40 sample=samples/rf20b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=41 sample=samples/rp21b.wav hivel=$P_HI
+	<region> key=41 sample=samples/rm21b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=41 sample=samples/rf21b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=42 sample=samples/rp22b.wav hivel=$P_HI
+	<region> key=42 sample=samples/rm22b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=42 sample=samples/rf22b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=43 sample=samples/rp23b.wav hivel=$P_HI
+	<region> key=43 sample=samples/rm23b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=43 sample=samples/rf23b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=44 sample=samples/rp24b.wav hivel=$P_HI
+	<region> key=44 sample=samples/rm24b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=44 sample=samples/rf24b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=45 sample=samples/rp25b.wav hivel=$P_HI
+	<region> key=45 sample=samples/rm25b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=45 sample=samples/rf25b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=46 sample=samples/rp26b.wav hivel=$P_HI
+	<region> key=46 sample=samples/rm26b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=46 sample=samples/rf26b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=47 sample=samples/rp27b.wav hivel=$P_HI
+	<region> key=47 sample=samples/rm27b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=47 sample=samples/rf27b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=48 sample=samples/rp28b.wav hivel=$P_HI
+	<region> key=48 sample=samples/rm28b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=48 sample=samples/rf28b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=49 sample=samples/rp29b.wav hivel=$P_HI
+	<region> key=49 sample=samples/rm29b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=49 sample=samples/rf29b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=50 sample=samples/rp30b.wav hivel=$P_HI
+	<region> key=50 sample=samples/rm30b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=50 sample=samples/rf30b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=51 sample=samples/rp31b.wav hivel=$P_HI
+	<region> key=51 sample=samples/rm31b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=51 sample=samples/rf31b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=52 sample=samples/rp32b.wav hivel=$P_HI
+	<region> key=52 sample=samples/rm32b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=52 sample=samples/rf32b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=53 sample=samples/rp33b.wav hivel=$P_HI
+	<region> key=53 sample=samples/rm33b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=53 sample=samples/rf33b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=54 sample=samples/rp34b.wav hivel=$P_HI
+	<region> key=54 sample=samples/rm34b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=54 sample=samples/rf34b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=55 sample=samples/rp35b.wav hivel=$P_HI
+	<region> key=55 sample=samples/rm35b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=55 sample=samples/rf35b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=56 sample=samples/rp36b.wav hivel=$P_HI
+	<region> key=56 sample=samples/rm36b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=56 sample=samples/rf36b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=57 sample=samples/rp37b.wav hivel=$P_HI
+	<region> key=57 sample=samples/rm37b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=57 sample=samples/rf37b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=58 sample=samples/rp38b.wav hivel=$P_HI
+	<region> key=58 sample=samples/rm38b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=58 sample=samples/rf38b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=59 sample=samples/rp39b.wav hivel=$P_HI
+	<region> key=59 sample=samples/rm39b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=59 sample=samples/rf39b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=60 sample=samples/rp40b.wav hivel=$P_HI
+	<region> key=60 sample=samples/rm40b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=60 sample=samples/rf40b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=61 sample=samples/rp41b.wav hivel=$P_HI
+	<region> key=61 sample=samples/rm41b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=61 sample=samples/rf41b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=62 sample=samples/rp42b.wav hivel=$P_HI
+	<region> key=62 sample=samples/rm42b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=62 sample=samples/rf42b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=63 sample=samples/rp43b.wav hivel=$P_HI
+	<region> key=63 sample=samples/rm43b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=63 sample=samples/rf43b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=64 sample=samples/rp44b.wav hivel=$P_HI
+	<region> key=64 sample=samples/rm44b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=64 sample=samples/rf44b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=65 sample=samples/rp45b.wav hivel=$P_HI
+	<region> key=65 sample=samples/rm45b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=65 sample=samples/rf45b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=66 sample=samples/rp46b.wav hivel=$P_HI
+	<region> key=66 sample=samples/rm46b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=66 sample=samples/rf46b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=67 sample=samples/rp47b.wav hivel=$P_HI
+	<region> key=67 sample=samples/rm47b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=67 sample=samples/rf47b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=68 sample=samples/rp48b.wav hivel=$P_HI
+	<region> key=68 sample=samples/rm48b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=68 sample=samples/rf48b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=69 sample=samples/rp49b.wav hivel=$P_HI
+	<region> key=69 sample=samples/rm49b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=69 sample=samples/rf49b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=70 sample=samples/rp50b.wav hivel=$P_HI
+	<region> key=70 sample=samples/rm50b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=70 sample=samples/rf50b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=71 sample=samples/rp51b.wav hivel=$P_HI
+	<region> key=71 sample=samples/rm51b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=71 sample=samples/rf51b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=72 sample=samples/rp52b.wav hivel=$P_HI
+	<region> key=72 sample=samples/rm52b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=72 sample=samples/rf52b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=73 sample=samples/rp53b.wav hivel=$P_HI
+	<region> key=73 sample=samples/rm53b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=73 sample=samples/rf53b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=74 sample=samples/rp54b.wav hivel=$P_HI
+	<region> key=74 sample=samples/rm54b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=74 sample=samples/rf54b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=75 sample=samples/rp55b.wav hivel=$P_HI
+	<region> key=75 sample=samples/rm55b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=75 sample=samples/rf55b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=76 sample=samples/rp56b.wav hivel=$P_HI
+	<region> key=76 sample=samples/rm56b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=76 sample=samples/rf56b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=77 sample=samples/rp57b.wav hivel=$P_HI
+	<region> key=77 sample=samples/rm57b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=77 sample=samples/rf57b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=78 sample=samples/rp58b.wav hivel=$P_HI
+	<region> key=78 sample=samples/rm58b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=78 sample=samples/rf58b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=79 sample=samples/rp59b.wav hivel=$P_HI
+	<region> key=79 sample=samples/rm59b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=79 sample=samples/rf59b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=80 sample=samples/rp60b.wav hivel=$P_HI
+	<region> key=80 sample=samples/rm60b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=80 sample=samples/rf60b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=81 sample=samples/rp61b.wav hivel=$P_HI
+	<region> key=81 sample=samples/rm61b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=81 sample=samples/rf61b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=82 sample=samples/rp62b.wav hivel=$P_HI
+	<region> key=82 sample=samples/rm62b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=82 sample=samples/rf62b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=83 sample=samples/rp63b.wav hivel=$P_HI
+	<region> key=83 sample=samples/rm63b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=83 sample=samples/rf63b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=84 sample=samples/rp64b.wav hivel=$P_HI
+	<region> key=84 sample=samples/rm64b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=84 sample=samples/rf64b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=85 sample=samples/rp65b.wav hivel=$P_HI
+	<region> key=85 sample=samples/rm65b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=85 sample=samples/rf65b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=86 sample=samples/rp66b.wav hivel=$P_HI
+	<region> key=86 sample=samples/rm66b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=86 sample=samples/rf66b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=87 sample=samples/rp67b.wav hivel=$P_HI
+	<region> key=87 sample=samples/rm67b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=87 sample=samples/rf67b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=88 sample=samples/rp68b.wav hivel=$P_HI
+	<region> key=88 sample=samples/rm68b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=88 sample=samples/rf68b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=89 sample=samples/rp69b.wav hivel=$P_HI
+	<region> key=89 sample=samples/rm69b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=89 sample=samples/rf69b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=90 sample=samples/rp70b.wav hivel=$P_HI
+	<region> key=90 sample=samples/rm70b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=90 sample=samples/rf70b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=91 sample=samples/rp71b.wav hivel=$P_HI
+	<region> key=91 sample=samples/rm71b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=91 sample=samples/rf71b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=92 sample=samples/rp72b.wav hivel=$P_HI
+	<region> key=92 sample=samples/rm72b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=92 sample=samples/rf72b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=93 sample=samples/rp73b.wav hivel=$P_HI
+	<region> key=93 sample=samples/rm73b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=93 sample=samples/rf73b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=94 sample=samples/rp74b.wav hivel=$P_HI
+	<region> key=94 sample=samples/rm74b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=94 sample=samples/rf74b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=95 sample=samples/rp75b.wav hivel=$P_HI
+	<region> key=95 sample=samples/rm75b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=95 sample=samples/rf75b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=96 sample=samples/rp76b.wav hivel=$P_HI
+	<region> key=96 sample=samples/rm76b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=96 sample=samples/rf76b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=97 sample=samples/rp77b.wav hivel=$P_HI
+	<region> key=97 sample=samples/rm77b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=97 sample=samples/rf77b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=98 sample=samples/rp78b.wav hivel=$P_HI
+	<region> key=98 sample=samples/rm78b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=98 sample=samples/rf78b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=99 sample=samples/rp79b.wav hivel=$P_HI
+	<region> key=99 sample=samples/rm79b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=99 sample=samples/rf79b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=100 sample=samples/rp80b.wav hivel=$P_HI
+	<region> key=100 sample=samples/rm80b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=100 sample=samples/rf80b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=101 sample=samples/rp81b.wav hivel=$P_HI
+	<region> key=101 sample=samples/rm81b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=101 sample=samples/rf81b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=102 sample=samples/rp82b.wav hivel=$P_HI
+	<region> key=102 sample=samples/rm82b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=102 sample=samples/rf82b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=103 sample=samples/rp83b.wav hivel=$P_HI
+	<region> key=103 sample=samples/rm83b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=103 sample=samples/rf83b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=104 sample=samples/rp84b.wav hivel=$P_HI
+	<region> key=104 sample=samples/rm84b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=104 sample=samples/rf84b.wav lovel=$F_LO hivel=$F_HI
+	<region> key=105 sample=samples/rp85b.wav hivel=$P_HI
+	<region> key=105 sample=samples/rm85b.wav lovel=$M_LO hivel=$M_HI
+	<region> key=105 sample=samples/rf85b.wav lovel=$F_LO hivel=$F_HI
+
+// -------- DAMPER (B) --------
+
+<master>
+
+xfin_locc15=0 // MIC B VOLUME
+xfin_hicc15=127 // MIC B VOLUME
+xfin_locc18=0
+xfin_hicc18=127
+sustain_sw=off
+loop_mode=one_shot
+lokey=c#
+hikey=c#
+
+	<group> // DOWN (B)
+
+	xfin_locc18=0
+	xfin_hicc18=127
+	group=2
+	off_by=1
+	on_locc64=127
+	on_hicc64=127
+
+	<region> sample=samples/pdb.wav
+
+	<group> // UP (B)
+
+	xfin_locc18=0
+	xfin_hicc18=127
+
+	group=1
+	trigger=release
+	on_locc64=0
+	on_hicc64=0
+
+	<region> sample=samples/pub.wav
